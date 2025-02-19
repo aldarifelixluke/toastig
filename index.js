@@ -5,13 +5,10 @@ const { URLSearchParams } = require('url');
 const app = express();
 const port = 3000;
 
-// Middleware to parse JSON request bodies
 app.use(express.json());
 
-// Set JSON spaces for prettier formatting
-app.set('json spaces', 2); // Added this line
+app.set('json spaces', 2); 
 
-// Function to get Instagram profile data
 async function getInstagramProfile(username) {
   if (!username) return null;
 
@@ -80,7 +77,6 @@ app.get('/', async (req, res) => {
 
       try {
         const params = new URLSearchParams(data);
-        // Jalankan kedua panggilan API secara bersamaan untuk mengurangi waktu tunggu.
         const [kaizResponse] = await Promise.all([
           axios.get(`${url}?${params.toString()}`)
         ]);
@@ -90,17 +86,17 @@ app.get('/', async (req, res) => {
 
           if (resFromKaiz.response) {
             const text = resFromKaiz.response;
-            const regex = /\[very_supportive:(.*?)\]/i; // Changed regex
+            const regex = /\[very_supportive:(.*?)\]/i; 
             const match = text.match(regex);
 
             if (match && match[1]) {
               response.status = true;
               response.message = 'Data retrieved successfully';
-              response.result = match[1].trim().replace(/\s+/g, ' '); // Directly assign the roast
+              response.result = match[1].trim().replace(/\s+/g, ' ');
               res.status(200).json(response);
             } else {
-              response.message = 'Failed to extract roasting text.';
-              console.error('No roasting text found in response:', text);
+              response.message = 'Failed to extract toasting text.';
+              console.error('No toasting text found in response:', text);
               res.status(422).json(response);
             }
 
